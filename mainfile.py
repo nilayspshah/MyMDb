@@ -64,7 +64,7 @@ def make_movie_object(s):
 
 
 from guessit import guess_file_info
-os.chdir("D:\Program Files\ApexDC++\Downloads\Movies\Temp Movies")
+os.chdir("C:\Movies")
 raw_movies=[]
 for file in glob.glob("*.*"):
     raw_movies.append(file)

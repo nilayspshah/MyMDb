@@ -14,8 +14,9 @@ main_page_head = '''
     <!-- Bootstrap 3 -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
     <style type="text/css" media="screen">
         body {
             padding-top: 80px;
@@ -61,6 +62,23 @@ main_page_head = '''
     	margin: 20px;
     }
     </style>
+
+
+
+    <script type="text/javascript" charset="utf-8">
+
+function toggleChevron(e) {
+    $(e.target)
+        .prev('.panel-heading')
+        .find("i.indicator")
+        .toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+}
+$('#accordion').on('hidden.bs.collapse', toggleChevron);
+$('#accordion').on('shown.bs.collapse', toggleChevron);
+    </script>
+
+
+
     <script type="text/javascript" charset="utf-8">
         // Pause the video when the modal is closed
       /*
@@ -152,37 +170,45 @@ main_page_content = '''
 # <div class="col-md-4 col-lg-4 Smovies-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
 # A single movie entry html template
 movie_tile_content = '''
-<div class="col-md-4 col-lg-4 movies-tile text-center">
-    <div class="bs-example">
-    <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-            <div class="panel-heading">
+
+
+      <div class="col-md-4 col-lg-4 movies-tile text-center">
+
+
+        <div class="bs-example">
+          <div class="panel-group" id="accordion{acid}">
+            <div class="panel panel-default">
+              <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#{movie_title}"><h2>{movie_title}</h2><br><img src="{poster_image_url}" width="100" height="150"></a>
+                  <a data-toggle="collapse" data-parent="#accordion{acid}" href="#accdd{acid}"><h2>{movie_title}</h2><br><img src="{poster_image_url}" width="100" height="150"></a>
                 </h4>
-            </div>
-            <div id="{movie_title}" class="panel-collapse collapse">
+              </div>
+              <div id="accdd{acid}" class="panel-collapse collapse ">
                 <div class="panel-body">
-                    <div class="list-group">
-                          <a href="#" class="list-group-item active">
-                            <b>IMDb Rating: {rating}</b>
-                          </a>
-                          <a href="#" class="list-group-item">Genre: {genre}</a>
-                          <a href="#" class="list-group-item">Cast: {cast}</a>
-                          <a href="#" class="list-group-item">Director: {director}</a>
-                          <a href="#" class="list-group-item">Plot: {plot}</a>
-                    </div>
+                  <div class="list-group">
+                    <a href="#" class="list-group-item active">
+                      <b>IMDb Rating: {rating}</b>
+                    </a>
+                    <a href="#" class="list-group-item">Genre: {genre}</a>
+                    <a href="#" class="list-group-item">Cast: {cast}</a>
+                    <a href="#" class="list-group-item">Director: {director}</a>
+                    <a href="#" class="list-group-item">Plot: {plot}</a>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
+         
+          
         </div>
-    </div>
-</div>
-</div>
+
+      </div>
 '''
 
 def create_movie_tiles_content(movies):
     # The HTML content for this section of the page
     content = ''
+    a=1
     for movie in movies:
         # Extract the youtube ID from the url
         youtube_id_match = re.search(r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
@@ -198,8 +224,11 @@ def create_movie_tiles_content(movies):
             plot=movie.storyline,
             rating=movie.rating,
             director=movie.director,
-            genre=movie.genre
+            genre=movie.genre,
+            acid=a,
+            
         )
+        a=a+1
     return content
 
 def open_movies_page(movies):
